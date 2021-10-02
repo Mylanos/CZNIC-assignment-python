@@ -1,0 +1,48 @@
+{
+    "file": [
+        {"id": "00000000-0000-0000-0000-000000000000"},
+        {"id": "bd65600d-8669-4903-8a14-af88203add38"},
+        {"id": "ad65600d-8669-4903-8a14-af88203arafc"}
+    ],
+    "stat": [
+        {
+            "fileId": "00000000-0000-0000-0000-000000000000",
+            "create_datetime": "2021-03-23T01:30:00.000-03:00",
+            "size": 20,
+            "mimetype": "video/gif",
+            "name": "ThisIsDefaultFileStat!"
+        },
+        {
+            "fileId": "bd65600d-8669-4903-8a14-af88203add38",
+            "create_datetime": "2021-03-01T09:20:00.000-01:00",
+            "size": 30,
+            "mimetype": "image/gif",
+            "name": "HelloWorldFile!"
+        },
+        {
+            "fileId": "ad65600d-8669-4903-8a14-af88203arafc",
+            "create_datetime": "2021-1-21T11:10:00.000-02:00",
+            "size": 30,
+            "mimetype": "image/gif",
+            "name": "HelloWorldFile!"
+        }
+    ],
+    "read": [
+        {
+            "fileId": "00000000-0000-0000-0000-000000000000",
+            "Content-Disposition": "inline",
+            "Content-Type": "ascii/html"
+        },
+        {
+            "fileId": "bd65600d-8669-4903-8a14-af88203add38",
+            "Content-Disposition": "inline",
+            "Content-Type": "text/html"
+        },
+        {
+            "fileId": "ad65600d-8669-4903-8a14-af88203arafc",
+            "Content-Disposition": "inline",
+            "Content-Type": "text/html"
+        }
+    ]
+}
+
