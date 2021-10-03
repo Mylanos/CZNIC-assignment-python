@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from os import stat
@@ -19,7 +19,7 @@ class FileStat:
     def from_json(cls, jsn):
         return cls(jsn.get('create_datetime'), jsn.get('size'), jsn.get("mimetype"), jsn.get("name"), jsn.get('fileId'))
 
-    def __str__(self):
+    def pretty_print(self):
         return f"""
         ID: {self.id}
         Creation datetime:{self.create_datetime}
@@ -27,3 +27,6 @@ class FileStat:
         Mimetype: {self.mimetype}
         Name: {self.name}
                 """
+
+    def __str__(self):
+        return self.pretty_print()

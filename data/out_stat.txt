@@ -1,0 +1,7 @@
+
+        ID: 00000000-0000-0000-0000-000000000000
+        Creation datetime:2021-03-23 01:30:00-03:00
+        File sizes: 20
+        Mimetype: video/gif
+        Name: ThisIsDefaultFileStat!
+                

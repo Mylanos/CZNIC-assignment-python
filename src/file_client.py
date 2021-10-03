@@ -56,9 +56,9 @@ class FileClient:
                 result = file_stat.from_json(obj)
             else:
                 result = str(obj)
-        if output:
+        if self.output:
             original_stdout = sys.stdout
-            with open(output, 'w') as f:     
+            with open(self.output, 'w') as f:     
                 sys.stdout = f # Change the standard output to the file we created.     
                 print(result)     
                 sys.stdout = original_stdout # Reset the standard output to its original val
@@ -81,7 +81,13 @@ class FileClient:
             'Accept-Language': 'en-US,en;q=0.9',
         }
 
-        return requests.get(self.api, headers=headers)      
+        try:
+            r = requests.get(self.api, headers=headers)
+            r.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            raise SystemExit(err)
+
+        return r
 
 
 if __name__ == "__main__":
