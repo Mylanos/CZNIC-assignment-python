@@ -1,8 +1,16 @@
 import json, unittest
 import requests
+import os, sys # if you want this directory
+
+try:
+    sys.path.index(os.getcwd()) # Or os.getcwd() for this directory
+except ValueError:
+    sys.path.append(os.getcwd()) # Or os.getcwd() for this directory
+
 from src.file_client import FileClient
 from src.stat_ import FileStat
 from src.read_ import FileRead
+
 
 class TestFileClient(unittest.TestCase):
 
@@ -11,10 +19,9 @@ class TestFileClient(unittest.TestCase):
         command = "stat"
         uuid_ = "00000000-0000-0000-0000-000000000000"
         file_client = FileClient(base_url, None, command, uuid_)
-        file_stat1 = FileStat()
-        file_stat2 = FileStat()
-        data_api, status_code = self.retrieve_api(file_client, file_stat1)
-        data_local = self.retrieve_local(command, uuid_, file_stat2)
+        file_stat = FileStat()
+        data_api, status_code = self.retrieve_api(file_client, file_stat)
+        data_local = self.retrieve_local(command, uuid_, file_stat)
 
         self.assertEqual(status_code, 200)   # should be succesful request
         self.assertEqual(data_local , data_api) # response from API should be the same as in json
@@ -24,10 +31,9 @@ class TestFileClient(unittest.TestCase):
         command = "read"
         uuid_ = "00000000-0000-0000-0000-000000000000"
         file_client = FileClient(base_url, None, command, uuid_)
-        file_stat1 = FileRead()
-        file_stat2 = FileRead()
-        data_api, status_code = self.retrieve_api(file_client, file_stat1)
-        data_local = self.retrieve_local(command, uuid_, file_stat2)
+        file_read = FileRead()
+        data_api, status_code = self.retrieve_api(file_client, file_read)
+        data_local = self.retrieve_local(command, uuid_, file_read)
 
         self.assertEqual(status_code, 200)   # should be succesful request
         self.assertEqual(data_local , data_api) # response from API should be the same as in json
@@ -81,9 +87,36 @@ class TestFileClient(unittest.TestCase):
         stat_list = []
         with open("data/db.json", 'r') as f:
             data = json.loads(f.read())
+            """ print(uuid_)
+            print('vs')
+            print(data[command][2]['fileId'])
+            print(data[command][2]['fileId'] == uuid_)
+            print('----------------------------------') """
             stat_list = [cmd_class_instance.from_json(obj) for obj in data[command] if obj['fileId'] == uuid_]
         return stat_list
+    
+    def test_subsequent_requests(self):
+        base_url = "http://localhost:3000/"
+        command = "stat"
+        uuid_1 = "00000000-0000-0000-0000-000000000000"
+        uuid_2 = "4245da7c-d332-46cf-b91c-4818dbc5439a"
+        file_client = FileClient(base_url, None, command, uuid_1)
+        file_stat = FileStat()
+        data_api1, status_code1 = self.retrieve_api(file_client, file_stat)
+        data_local1 = self.retrieve_local(command, uuid_1, file_stat)
+
+        # changing the requested uuid
+        file_client.uuid = uuid_2
+        data_api2, status_code2 = self.retrieve_api(file_client, file_stat)
+        data_local2 = self.retrieve_local(command, uuid_2, file_stat)
+        
+        self.assertEqual(status_code1, 200)   # should be succesful request
+        self.assertEqual(data_local1 , data_api1) # response from API should be the same as in json
+
+        self.assertEqual(status_code2, 200)   # should be succesful request
+        self.assertEqual(data_local2 , data_api2) # response from API should be the same as in json
     
 
 if __name__ == "__main__":
     unittest.main()
+    
